@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07111f">
+  <meta name="description" content="Explore photographs by Abhisek of Vectorrboom, a Bangalore photographer covering events, portraits, celebrity, pre-wedding, pets and creative photography.">
+  <meta name="robots" content="index,follow,max-image-preview:large"><meta name="author" content="Abhisek | Vectorrboom">
+  <meta name="keywords" content="Abhisek photography, Bangalore photographer, Bengaluru photographer, event photography, celebrity photography, pre-wedding photography, pet photography, portraits, Vectorrboom">
+  <link rel="canonical" href="https://vectorrboom.github.io/vectorrboom.io/portfolio.html">
+  <link rel="icon" type="image/png" href="assets/vectorrboom-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <title>Photography Portfolio | Abhisek — Vectorrboom, Bangalore</title>
+  <style>
+    .portfolio-head{padding:clamp(48px,8vw,96px) 0 28px}.portfolio-head h1{font-size:clamp(44px,7vw,82px);line-height:1;letter-spacing:-.06em;margin:12px 0}.portfolio-head p{max-width:680px;color:var(--muted)}
+    .gallery-controls{display:flex;gap:8px;flex-wrap:wrap;padding:18px 0 24px;position:sticky;top:74px;z-index:5;background:var(--bg);}
+    .filter-chip{cursor:pointer}
+    .photo-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;}
+    .photo-item{position:relative;display:block;aspect-ratio:4/5;overflow:hidden;padding:0;border:0;border-radius:2px;background:var(--surface);cursor:pointer;min-width:0}
+    .photo-item img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .35s ease,opacity .35s ease}
+    .photo-item:hover img{transform:scale(1.035);opacity:.92}
+    .photo-item .photo-label{position:absolute;left:0;right:0;bottom:0;padding:28px 10px 9px;color:#fff;text-align:left;font-size:11px;letter-spacing:.04em;background:linear-gradient(transparent,rgba(0,0,0,.62));opacity:0;transition:opacity .2s ease}
+    .photo-item:hover .photo-label,.photo-item:focus-visible .photo-label{opacity:1}
+    .gallery-status{color:var(--muted);padding:28px 0 60px;font-size:14px}.photo-lightbox{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center;padding:24px}.photo-lightbox.open{display:flex}.photo-lightbox img{max-width:min(92vw,900px);max-height:88vh;object-fit:contain}.photo-lightbox button{position:absolute;top:18px;right:24px;border:0;background:transparent;color:white;font-size:36px;cursor:pointer}
+    @media(max-width:900px){.photo-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:2px}}
+    @media(max-width:560px){.photo-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:2px}.gallery-controls{top:64px}.portfolio-head{padding-top:48px}}
+    @media(prefers-reduced-motion:reduce){.photo-item img{transition:none}}
+  </style>
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem('portfolio-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(_){}</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a><div class="scroll-progress" aria-hidden="true"><span id="progress"></span></div>
+  <header class="site-header" id="top">
+    <a class="brand" href="index.html" aria-label="Vectorrboom home"><img src="assets/vectorrboom-logo.png" alt="" width="52" height="52"><span class="brand-copy"><strong>VECTORRBOOM</strong><small>HYBRID PHOTOGRAPHY</small></span></a>
+    <nav class="desktop-nav" aria-label="Main navigation"><a href="portfolio.html" aria-current="page">Portfolio</a><a href="index.html#about">About</a><a href="index.html#contact">Contact</a></nav>
+    <div class="header-actions"><button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch colour theme"><span class="theme-icon" aria-hidden="true">☼</span><span class="theme-label">Light mode</span></button><a class="contact-pill" href="index.html#contact">Book a shoot <span aria-hidden="true">↗</span></a><button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button></div>
+  </header>
+  <main id="main" class="section-shell">
+    <section class="portfolio-head"><p class="eyebrow">PHOTOGRAPHY BY ABHISEK</p><h1>Stories in <span class="serif-italic">frames.</span></h1><p>Explore selected work by Abhisek — events, celebrity, creative projects, pre-wedding sessions, pets and portraits. Photographs are organised by category, with a close, edge-to-edge 4:5 grid designed for portrait images.</p></section>
+    <div class="gallery-controls" id="filters" role="group" aria-label="Filter photographs"><button class="filter-chip active" type="button" data-filter="all">All photographs</button><button class="filter-chip" type="button" data-filter="events">Events</button><button class="filter-chip" type="button" data-filter="celebrity">Celebrity</button><button class="filter-chip" type="button" data-filter="misc">Creative & misc</button><button class="filter-chip" type="button" data-filter="prewedding">Pre-wedding</button><button class="filter-chip" type="button" data-filter="pets">Pets</button><button class="filter-chip" type="button" data-filter="portraits">Portraits</button></div>
+    <div class="photo-grid" id="photoGrid" aria-live="polite"></div><p class="gallery-status" id="galleryStatus">Loading photographs…</p>
+  </main>
+  <footer class="site-footer section-shell"><a class="brand footer-brand" href="index.html" aria-label="Vectorrboom home"><img src="assets/vectorrboom-logo.png" alt="" width="44" height="44"><span class="brand-copy"><strong>VECTORRBOOM</strong><small>BY ABHISEK · BANGALORE</small></span></a><span class="footer-copy">© <span id="year"></span> VECTORRBOOM</span><div class="footer-links"><a href="https://www.instagram.com/vectorrboom/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://in.pinterest.com/vectorrboom/" target="_blank" rel="noopener noreferrer">Pinterest ↗</a><a href="privacy.html">Privacy</a><a href="#top">Back to top ↑</a></div></footer>
+  <div class="photo-lightbox" id="photoLightbox" role="dialog" aria-modal="true" aria-label="Photograph preview"><button type="button" id="closeLightbox" aria-label="Close photograph">×</button><img id="largePhoto" alt=""></div>
+  <script src="script.js" defer></script>
+  <script>
+    (()=>{
+      const owner='vectorrboom', repo='vectorrboom.io', branch='main';
+      const categories=['events','celebrity','misc','prewedding','pets','portraits'];
+      const grid=document.getElementById('photoGrid'), status=document.getElementById('galleryStatus');
+      const filters=[...document.querySelectorAll('[data-filter]')]; let photos=[]; let active='all';
+      const isImage=p=>/\.(jpe?g|png|webp|avif|gif)$/i.test(p);
+      const titleFromPath=p=>p.split('/').pop().replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+      function render(){grid.replaceChildren();const shown=photos.filter(p=>active==='all'||p.category===active);for(const p of shown){const b=document.createElement('button');b.type='button';b.className='photo-item';b.setAttribute('aria-label','View '+p.title);const im=document.createElement('img');im.src=p.url;im.alt=p.title+' — '+p.category+' photography by Abhisek, Vectorrboom, Bangalore';im.loading='lazy';im.decoding='async';im.onerror=()=>{b.remove();};const label=document.createElement('span');label.className='photo-label';label.textContent=p.title;b.append(im,label);b.addEventListener('click',()=>{const box=document.getElementById('photoLightbox');document.getElementById('largePhoto').src=p.url;document.getElementById('largePhoto').alt=im.alt;box.classList.add('open');});grid.append(b)}status.textContent=shown.length?`${shown.length} photograph${shown.length===1?'':'s'}${active==='all'?'':' in '+active}.`:'No images found in this category yet. Add image files to the matching folder inside /img.';}
+      filters.forEach(btn=>btn.addEventListener('click',()=>{active=btn.dataset.filter;filters.forEach(b=>b.classList.toggle('active',b===btn));if(window.gtag)window.gtag('event','gallery_filter',{category:active});render()}));
+      document.getElementById('closeLightbox').addEventListener('click',()=>document.getElementById('photoLightbox').classList.remove('open'));
+      document.getElementById('photoLightbox').addEventListener('click',e=>{if(e.target.id==='photoLightbox')e.currentTarget.classList.remove('open')});document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('photoLightbox').classList.remove('open')});
+      fetch(`https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`,{headers:{Accept:'application/vnd.github+json'}}).then(r=>{if(!r.ok)throw new Error('GitHub image listing is unavailable');return r.json()}).then(data=>{photos=(data.tree||[]).filter(x=>x.type==='blob'&&x.path.startsWith('img/')&&isImage(x.path)).map(x=>{const parts=x.path.split('/');const folder=(parts[1]||'misc').toLowerCase();const category=categories.includes(folder)?folder:(folder.includes('portrait')?'portraits':'misc');return {path:x.path,category,title:titleFromPath(x.path),url:`https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${x.path.split('/').map(encodeURIComponent).join('/')}`}}).sort((a,b)=>a.path.localeCompare(b.path));render();}).catch(()=>{status.textContent='Could not load the image list. Check that the repository is public and that your photographs are inside /img/category/. You can still use the filters after the GitHub image listing becomes available.'});
+    })();
+  </script>
+</body></html>
