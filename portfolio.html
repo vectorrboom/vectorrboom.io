@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0a1018"><meta name="description" content="Photography portfolio by Vectorrboom — portraits, events, kids and babies, pets, creative photography and pre-wedding stories.">
+  <link rel="icon" type="image/png" href="assets/vectorrboom-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="portfolio-ui.css">
+  <title>Portfolio | Vectorrboom</title>
+</head>
+<body>
+  <a class="skip-link" href="#gallery">Skip to photographs</a>
+  <header class="topbar">
+    <a class="brand" href="index.html"><img src="assets/vectorrboom-logo.png" alt="" width="38" height="38"><span>Vectorrboom</span></a>
+    <nav class="main-nav" aria-label="Main navigation"><a href="index.html">Home</a><a class="active" href="portfolio.html">Portfolio</a><a href="index.html#about">About</a><a href="index.html#contact">Contact</a></nav>
+    <a class="contact-link" href="index.html#contact">Contact <span aria-hidden="true">↗</span></a>
+  </header>
+  <main>
+    <section class="portfolio-stage" id="top" aria-labelledby="portfolio-title">
+      <div class="mountain-backdrop" aria-hidden="true"></div><div class="stage-shade" aria-hidden="true"></div>
+      <div class="stage-content">
+        <div class="intro"><p class="eyebrow">PHOTOGRAPHY · BY ABHISEK</p><h1 id="portfolio-title">My Portfolio</h1><p>Moments, captured forever</p></div>
+        <div class="filters" id="filters" role="group" aria-label="Filter photographs">
+          <button class="filter active" data-filter="all" type="button">All <span id="count-all">0</span></button>
+          <button class="filter" data-filter="misc" type="button">Misc <span id="count-misc">0</span></button>
+          <button class="filter" data-filter="event" type="button">Event <span id="count-event">0</span></button>
+          <button class="filter" data-filter="portraits" type="button">Portraits <span id="count-portraits">0</span></button>
+          <button class="filter" data-filter="pets" type="button">Pets <span id="count-pets">0</span></button>
+          <button class="filter" data-filter="pre-wedding" type="button">Pre-wedding <span id="count-pre-wedding">0</span></button>
+          <button class="filter" data-filter="kids-babies" type="button">Kids &amp; Babies <span id="count-kids-babies">0</span></button>
+        </div>
+        <div class="grid-editor" id="gridEditor" hidden aria-label="Grid layout editor">
+          <div class="grid-editor-copy"><strong>Grid layout editor</strong><span>Drag photos to rearrange them. Choose the desktop column count, then save your layout.</span></div>
+          <label class="column-control" for="gridColumns">Desktop columns <select id="gridColumns"><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5" selected>5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select></label>
+          <label class="bulk-select-control" for="selectAllPhotos"><input id="selectAllPhotos" type="checkbox" disabled><span>Select all visible</span></label><span class="selected-photo-count" id="selectedPhotoCount" aria-live="polite">0 selected</span><button class="dock-button bulk-delete-button" id="bulkDeleteButton" type="button" disabled>Delete selected</button><button class="dock-button save-layout-button" id="saveGridLayout" type="button">Save layout</button>
+        </div>
+        <div class="photo-grid" id="photoGrid" aria-live="polite"><div class="loading-card">Loading photographs…</div></div>
+        <div class="empty-state" id="emptyState" hidden><span class="empty-icon">✦</span><strong>This collection is waiting for its first story.</strong><p>New photographs will appear here soon.</p></div>
+        <p class="gallery-status" id="galleryStatus" role="status">Connecting to the gallery…</p>
+      </div>
+      <div class="grid-dock" aria-label="Portfolio management controls"><span class="dock-note" id="gridLockStatus">Gallery management</span><button class="dock-button lock-button" id="lockGridButton" type="button"><span aria-hidden="true">♙</span> Unlock Grid</button><button class="dock-button upload-button" id="openUploader" type="button"><span aria-hidden="true">⇧</span> Upload</button></div>
+    </section>
+    <footer class="portfolio-footer"><a class="brand footer-brand" href="index.html"><img src="assets/vectorrboom-logo.png" alt="" width="30" height="30"><span>Vectorrboom</span></a><span>© <span id="year"></span> · Stories in frames</span><div><a href="https://www.instagram.com/vectorrboom/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://in.pinterest.com/vectorrboom/" target="_blank" rel="noopener noreferrer">Pinterest ↗</a><a href="#top" id="backToTop">Back to top ↑</a></div></footer>
+  </main>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Photograph preview"><button class="lightbox-close" id="closeLightbox" aria-label="Close photograph">×</button><button class="lightbox-arrow prev" id="prevPhoto" aria-label="Previous photograph">‹</button><figure><img id="lightboxImage" alt=""><figcaption id="lightboxCaption"></figcaption></figure><button class="lightbox-arrow next" id="nextPhoto" aria-label="Next photograph">›</button></div>
+
+  <div class="modal-backdrop" id="tokenModal" hidden><section class="modal token-card" role="dialog" aria-modal="true" aria-labelledby="tokenTitle"><button class="modal-x" data-close-modal="tokenModal" aria-label="Close">×</button><div class="github-mark" aria-hidden="true">●</div><h2 id="tokenTitle">Portfolio Access</h2><form id="tokenForm"><div class="token-input-wrap"><input id="githubToken" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Access credential" required><button type="button" id="toggleTokenVisibility" aria-label="Show entry">◉</button></div><p class="inline-status" id="tokenStatus" role="status"></p><button class="primary-button full" id="validateTokenButton" type="submit">Continue</button><button class="text-button full" type="button" data-close-modal="tokenModal">Cancel</button></form></section></div>
+
+  <div class="modal-backdrop" id="uploaderModal" hidden><section class="modal uploader-card" role="dialog" aria-modal="true" aria-labelledby="uploadTitle"><button class="modal-x" data-close-modal="uploaderModal" aria-label="Close uploader">×</button><div class="modal-heading"><div><p class="eyebrow">GALLERY MANAGEMENT</p><h2 id="uploadTitle">Upload Media</h2></div><span class="session-pill" id="sessionPill">Unlocked</span></div>
+    <div class="media-switch" role="group" aria-label="Media type"><button class="selected" type="button" data-media="image">Image</button><button type="button" data-media="video">Video</button></div>
+    <label class="field-label" for="uploadCategory">Category</label><select id="uploadCategory"><option value="misc">▦ &nbsp; Misc</option><option value="event">▣ &nbsp; Event</option><option value="portraits">♙ &nbsp; Portraits</option><option value="pets">♧ &nbsp; Pets</option><option value="pre-wedding">♡ &nbsp; Pre-wedding</option><option value="kids-babies">✿ &nbsp; Kids &amp; Babies</option></select>
+    <div class="drop-zone" id="dropZone" tabindex="0" role="button" aria-label="Choose files or drop them here"><div class="cloud-icon">⇧</div><strong>Drag &amp; drop files here</strong><span>or <button type="button" class="browse-button" id="browseFiles">click to browse</button></span><small id="fileHelp">JPG, PNG, WebP, GIF · max 20 MB per file</small><input id="fileInput" type="file" hidden multiple accept="image/jpeg,image/png,image/webp,image/gif,image/avif"></div>
+    <div class="selected-files" id="selectedFiles" aria-live="polite"></div><div class="upload-notice" id="uploadNotice" role="status"></div>
+    <div class="upload-actions"><button class="text-button" id="clearFiles" type="button">Clear selection</button><button class="primary-button" id="startUpload" type="button" disabled>Upload files</button></div>
+    <p class="security-note">Files are committed directly to your public GitHub repository. Avoid uploading private or sensitive media. Uploading may create one Git commit per file.</p>
+  </section></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="portfolio-ui.js" defer></script>
+</body>
+</html>

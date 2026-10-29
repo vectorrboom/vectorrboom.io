@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://vectorrboom.github.io/vectorrboom.io/sitemap.xml
