@@ -117,7 +117,20 @@
       allMedia.sort((a, b) => a.path.localeCompare(b.path));
       try {
         const layoutResponse = await fetch(`${RAW}asset/grid-layout.json?ts=${Date.now()}`, { cache: 'no-store' });
-        if (layoutResponse.ok) { const layout = await layoutResponse.json(); if (Array.isArray(layout.order)) layoutOrder = layout.order; if (Number.isInteger(layout.columns)) gridColumns = Math.min(8, Math.max(2, layout.columns)); if (layout.sizes && typeof layout.sizes === 'object') layoutSizes = layout.sizes; }
+        if (layoutResponse.ok) {
+          const layout = await layoutResponse.json();
+          const availableImagePaths = new Set(allMedia.filter(item => item.type === 'image').map(item => item.path));
+          if (Array.isArray(layout.order)) {
+            // Ignore stale entries (deleted images, videos, or legacy paths) and append new images.
+            const validOrder = layout.order.filter(path => typeof path === 'string' && availableImagePaths.has(path));
+            layoutOrder = [...new Set(validOrder)];
+            for (const item of allMedia) if (item.type === 'image' && !layoutOrder.includes(item.path)) layoutOrder.push(item.path);
+          }
+          if (Number.isInteger(layout.columns)) gridColumns = Math.min(8, Math.max(2, layout.columns));
+          if (layout.sizes && typeof layout.sizes === 'object') {
+            layoutSizes = Object.fromEntries(Object.entries(layout.sizes).filter(([path, size]) => availableImagePaths.has(path) && size && typeof size === 'object'));
+          }
+        }
       } catch (_) { /* first visit: use the default layout */ }
       $('#gridColumns').value = String(gridColumns);
       $('#photoGrid').style.setProperty('--grid-columns', gridColumns);
@@ -311,7 +324,7 @@
     if (!requireSession()) return;
     gridColumns = Math.min(8, Math.max(2, Number($('#gridColumns').value) || 5));
     $('#photoGrid').style.setProperty('--grid-columns', gridColumns);
-    layoutOrder = allMedia.map(item => item.path);
+    layoutOrder = allMedia.filter(item => item.type === 'image').map(item => item.path);
     const path = 'asset/grid-layout.json';
     const status = $('#gridLockStatus'); status.textContent = 'Saving layout…';
     try {
