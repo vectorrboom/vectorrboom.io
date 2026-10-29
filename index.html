@@ -24,29 +24,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <style>
-    .simple-hero { min-height: min(680px, 78svh); display:flex; align-items:center; padding-top: clamp(70px, 12vh, 130px); padding-bottom: clamp(70px, 12vh, 130px); }
-    .simple-hero .hero-title { max-width: 900px; font-size: clamp(48px, 8vw, 100px); line-height: .98; letter-spacing: -.065em; }
-    .simple-hero .hero-lede { max-width: 650px; }
-    .home-explore { padding: 70px 0 86px; border-top: 1px solid var(--line); }
-    .home-gallery-head { display:flex; justify-content:space-between; align-items:end; gap:24px; margin-bottom:24px; }
-    .home-gallery-head h2 { font-size:clamp(34px,5vw,58px); line-height:1.05; letter-spacing:-.055em; margin:12px 0 0; }
-    .home-gallery-head p { max-width:390px; color:var(--muted); font-size:13px; line-height:1.7; margin:0 0 4px; }
-    .home-gallery-controls { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin:0 0 18px; }
-    .home-gallery-controls .filter-chip { text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:5px; }
-    .home-gallery-controls .home-more-link { margin-left:auto; }
-    .home-preview-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
-    .home-preview-grid .gallery-card { display:block; text-decoration:none; min-width:0; }
-    .home-preview-grid .card-image { display:block; width:100%; height:auto; aspect-ratio:4/5; overflow:hidden; border-radius:12px; background:var(--panel); }
-    .home-preview-grid .card-image img { display:block; width:100%; height:100%; object-fit:cover; }
-    .home-preview-grid .card-meta { padding:12px 2px 8px; }
-    .home-preview-grid .card-meta strong { font-size:14px; }
-    .home-preview-grid .card-meta small { text-transform:uppercase; }
-    .home-preview-grid .gallery-card[hidden] { display:none; }
-    @media(max-width:700px){ .home-gallery-head { align-items:flex-start; flex-direction:column; gap:10px; } .home-explore { padding:54px 0 64px; } .home-preview-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; } .home-gallery-controls .home-more-link { margin-left:0; } .home-preview-grid .card-meta { gap:5px; } .home-preview-grid .card-meta strong { font-size:12px; } }
-    @media(max-width:700px){ .simple-hero{min-height:64svh;padding-top:70px;padding-bottom:70px} }
-  </style>
-
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -91,7 +68,7 @@
       <span class="brand-copy"><strong>VECTORRBOOM</strong><small>HYBRID PHOTOGRAPHY</small></span>
     </a>
     <nav class="desktop-nav" aria-label="Main navigation">
-      <a href="portfolio.html">Portfolio</a><a href="#about">About</a><a href="#contact">Contact</a>
+      <a href="portfolio.html">Portfolio</a><a href="#services">What I shoot</a><a href="#about">About</a><a href="#contact">Contact</a>
     </nav>
     <div class="header-actions">
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch colour theme"><span class="theme-icon" aria-hidden="true">☼</span><span class="theme-label">Light mode</span></button>
@@ -101,20 +78,23 @@
   </header>
 
   <main id="main">
-    <section class="hero simple-hero" id="home-hero" aria-label="Vectorrboom photography introduction">
-      <div class="hero-copy section-shell">
+    <section class="hero section-shell">
+      <div class="hero-copy">
         <p class="hero-kicker reveal"><span class="status-dot"></span> HYBRID CREATOR · BANGALORE, INDIA</p>
-        <h1 class="hero-title reveal">Stories, seen<br><span class="gradient-text">your way.</span></h1>
-        <p class="hero-lede reveal">I’m Abhisek, a Bangalore-based photographer creating portraits, brand visuals, event stories, pre-wedding frames, pet photographs and other creative work.</p>
+        <h1 class="hero-title reveal">Real people.<br><span class="gradient-text">Real stories.</span><br>Distinctive frames.</h1>
+        <p class="hero-lede reveal">I’m Abhisek — the photographer behind <strong>Vectorrboom</strong>. From portraits and brand stories to events, pre-wedding celebrations, pets and creative visuals, I make images with character.</p>
         <div class="hero-actions reveal">
-          <a class="button button-primary" href="portfolio.html">Explore photographs <span aria-hidden="true">↗</span></a>
-          <a class="button button-quiet" href="#contact">Book a shoot <span aria-hidden="true">↗</span></a>
+          <a class="button button-primary" href="#contact">Book your shoot <span aria-hidden="true">↗</span></a>
+          <a class="button button-quiet" href="portfolio.html">Explore portfolio <span aria-hidden="true">↓</span></a>
         </div>
-        <div class="hero-location reveal"><span aria-hidden="true">⌖</span> Bangalore, India · Available for selected travel</div>
+        <div class="hero-location reveal"><span aria-hidden="true">⌖</span> Based in Bangalore · Available for selected travel</div>
+      </div>
+      <div class="hero-visual reveal">
+        <div class="hero-logo-frame"><img src="assets/vectorrboom-logo.png" alt="Vectorrboom — Hybrid Photography logo" width="1408" height="768"></div>
+        <div class="hero-photo-frame"><img src="assets/abhisek-photographer.png" alt="Abhisek photographing a scene in the mountains" width="1143" height="2048" fetchpriority="high"></div>
+        <div class="floating-note"><span class="note-dot"></span><span><strong>Abhisek</strong><small>Photographer · Bangalore</small></span></div>
       </div>
     </section>
-
-
 
     <section class="intro section-shell reveal" id="about">
       <p class="eyebrow">MEET THE CREATOR</p>
@@ -140,25 +120,29 @@
       </div>
     </section>
 
-    <section class="home-explore section-shell reveal" id="selected-work" aria-label="Selected photography work">
-      <div class="home-gallery-head">
-        <div><p class="eyebrow">A FEW FRAMES TO START</p><h2>Stories in <span class="serif-italic muted-text">frames.</span></h2></div>
-        <p>A small preview of the moments, people and personalities I love to photograph. These are sample images for now and will be replaced with my own work.</p>
+    <section class="services section-shell" id="services">
+      <div class="section-heading reveal"><div><p class="eyebrow">WHAT I SHOOT</p><h2>Different stories.<br><span class="serif-italic">One creative eye.</span></h2></div><p class="section-aside">Tell me what you’re planning.<br>We’ll shape the shoot around it.</p></div>
+      <div class="service-grid">
+        <article class="service-card reveal"><span class="service-number">01</span><div class="service-icon">◉</div><h3>Portraits & people</h3><p>Personal portraits, lifestyle sessions, couples, creative headshots and expressive people photography.</p><a href="#contact" class="text-link">Plan a portrait <span>↗</span></a></article>
+        <article class="service-card reveal"><span class="service-number">02</span><div class="service-icon">✳</div><h3>Brand photography</h3><p>Visual content for founders, creators, products, small businesses, campaigns and social media.</p><a href="#contact" class="text-link">Tell me about your brand <span>↗</span></a></article>
+        <article class="service-card reveal"><span class="service-number">03</span><div class="service-icon">⌁</div><h3>Events & milestones</h3><p>Birthdays, baby showers, gatherings and meaningful moments, documented with care.</p><a href="#contact" class="text-link">Capture your event <span>↗</span></a></article>
+        <article class="service-card reveal"><span class="service-number">04</span><div class="service-icon">♡</div><h3>Pre-wedding</h3><p>Couple stories and pre-wedding sessions that focus on your chemistry, style and shared details.</p><a href="#contact" class="text-link">Create your story <span>↗</span></a></article>
+        <article class="service-card reveal"><span class="service-number">05</span><div class="service-icon">✿</div><h3>Pet photoshoots</h3><p>Playful, patient portraits of pets and the people who love them — paws, whiskers and personality included.</p><a href="#contact" class="text-link">Book a pet session <span>↗</span></a></article>
+        <article class="service-card reveal"><span class="service-number">06</span><div class="service-icon">✦</div><h3>Creative visuals</h3><p>Experimental concepts, editorial frames, visual ideas and one-off projects that deserve a fresh approach.</p><a href="#contact" class="text-link">Pitch an idea <span>↗</span></a></article>
       </div>
-      <div class="home-gallery-controls" role="group" aria-label="Filter selected photographs">
-        <button class="filter-chip active" type="button" data-filter="all">All (<span id="homeAllCount">0</span>)</button>
-        <button class="filter-chip" type="button" data-filter="events">Events</button>
-        <button class="filter-chip" type="button" data-filter="pets">Pets</button>
-        <a class="filter-chip home-more-link" href="portfolio.html">.. More <span aria-hidden="true">↗</span></a>
+    </section>
+
+    <section class="portfolio-callout section-shell reveal" aria-labelledby="portfolio-callout-title">
+      <div class="portfolio-callout-copy">
+        <p class="eyebrow">THE PORTFOLIO</p>
+        <h2 id="portfolio-callout-title">Stories, framed <span class="serif-italic">your way.</span></h2>
+        <p>Explore the full collection of portraits, events, pets, pre-wedding stories and creative frames in one dedicated gallery.</p>
       </div>
-      <div class="home-preview-grid" id="homePreviewGrid">
-        <a class="gallery-card" href="portfolio.html" data-category="events" data-title="A moment to remember" data-image="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=900&q=85"><span class="card-image"><img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=900&q=85" alt="Celebration venue decorated for an event" loading="lazy" width="900" height="1125"></span><span class="card-meta"><span><small>EVENTS</small><strong>A moment to remember</strong></span><span class="card-arrow" aria-hidden="true">↗</span></span></a>
-        <a class="gallery-card" href="portfolio.html" data-category="pets" data-title="Little curious soul" data-image="https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=85"><span class="card-image"><img src="https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=85" alt="Dog portrait looking toward the camera" loading="lazy" width="900" height="1125"></span><span class="card-meta"><span><small>PETS</small><strong>Little curious soul</strong></span><span class="card-arrow" aria-hidden="true">↗</span></span></a>
-        <a class="gallery-card" href="portfolio.html" data-category="events" data-title="The celebration" data-image="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=900&q=85"><span class="card-image"><img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=900&q=85" alt="Beautifully arranged celebration table" loading="lazy" width="900" height="1125"></span><span class="card-meta"><span><small>EVENTS</small><strong>The celebration</strong></span><span class="card-arrow" aria-hidden="true">↗</span></span></a>
-        <a class="gallery-card" href="portfolio.html" data-category="pets" data-title="Best-friend energy" data-image="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=900&q=85"><span class="card-image"><img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=900&q=85" alt="Happy dog portrait outdoors" loading="lazy" width="900" height="1125"></span><span class="card-meta"><span><small>PETS</small><strong>Best-friend energy</strong></span><span class="card-arrow" aria-hidden="true">↗</span></span></a>
-        <a class="gallery-card" href="portfolio.html" data-category="events" data-title="Together, in the moment" data-image="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=85"><span class="card-image"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=85" alt="Wedding celebration with guests" loading="lazy" width="900" height="1125"></span><span class="card-meta"><span><small>EVENTS</small><strong>Together, in the moment</strong></span><span class="card-arrow" aria-hidden="true">↗</span></span></a>
-        <a class="gallery-card" href="portfolio.html" data-category="pets" data-title="A face full of character" data-image="https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?auto=format&fit=crop&w=900&q=85"><span class="card-image"><img src="https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?auto=format&fit=crop&w=900&q=85" alt="Playful dog photographed close up" loading="lazy" width="900" height="1125"></span><span class="card-meta"><span><small>PETS</small><strong>A face full of character</strong></span><span class="card-arrow" aria-hidden="true">↗</span></span></a>
-      </div>
+      <a class="button button-primary" href="portfolio.html">Open portfolio <span aria-hidden="true">↗</span></a>
+    </section>
+
+<section class="manifesto section-shell reveal">
+      <span class="manifesto-mark">“</span><p>Every frame has a purpose.<br><span class="serif-italic">Every story deserves its own light.</span></p><span class="manifesto-caption">VECTORRBOOM · HYBRID PHOTOGRAPHY</span>
     </section>
 
     <section class="contact-section section-shell" id="contact">
@@ -177,10 +161,12 @@
   <footer class="site-footer section-shell">
     <a class="brand footer-brand" href="#top" aria-label="Vectorrboom home"><img src="assets/vectorrboom-logo.png" alt="" width="44" height="44"><span class="brand-copy"><strong>VECTORRBOOM</strong><small>BY ABHISEK · BANGALORE</small></span></a>
     <span class="footer-copy">INDEPENDENTLY CREATED · © <span id="year"></span> VECTORRBOOM</span>
-    <div class="footer-links"><a href="https://www.instagram.com/vectorrboom/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://in.pinterest.com/vectorrboom/" target="_blank" rel="noopener noreferrer">Pinterest ↗</a><a href="privacy.html">Privacy</a><a href="#top">Back to top ↑</a></div>
+    <div class="footer-links"><a href="https://www.instagram.com/vectorrboom/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://in.pinterest.com/vectorrboom/" target="_blank" rel="noopener noreferrer">Pinterest ↗</a><a href="#top">Back to top ↑</a></div>
   </footer>
 
-
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photograph preview" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close preview" type="button">×</button><button class="lightbox-prev" id="lightboxPrev" aria-label="Previous photograph" type="button">←</button><figure><img id="lightboxImage" alt=""><figcaption><span id="lightboxTitle"></span><small id="lightboxDescription"></small></figcaption></figure><button class="lightbox-next" id="lightboxNext" aria-label="Next photograph" type="button">→</button>
+  </div>
   <script src="script.js" defer></script>
 </body>
 </html>
