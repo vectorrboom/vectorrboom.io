@@ -9,11 +9,12 @@
   const MAX_FILE_BYTES = 20 * 1024 * 1024;
   const $ = (s, root = document) => root.querySelector(s);
   const $$ = (s, root = document) => [...root.querySelectorAll(s)];
-  const categories = ['misc', 'event', 'portraits', 'pets', 'pre-wedding'];
+  const categories = ['misc', 'event', 'portraits', 'pets', 'pre-wedding', 'kids-babies'];
   const categoryAliases = {
     misc: ['misc', 'creative', 'other', 'others'], event: ['event', 'events'],
     portraits: ['portrait', 'portraits'], pets: ['pet', 'pets'],
-    'pre-wedding': ['pre-wedding', 'prewedding', 'pre_wedding', 'wedding']
+    'pre-wedding': ['pre-wedding', 'prewedding', 'pre_wedding', 'wedding'],
+    'kids-babies': ['kids-babies', 'kids_babies', 'kids', 'babies', 'baby', 'children', 'child']
   };
   const imageExt = /\.(jpe?g|png|webp|gif|avif|bmp)$/i;
   const videoExt = /\.(mp4|mov|webm|m4v)$/i;
@@ -80,31 +81,30 @@
   }
   async function validateToken(value) {
     const status = $('#tokenStatus'); const button = $('#validateTokenButton');
-    status.className = 'inline-status'; status.textContent = 'Checking token and repository permissions…'; button.disabled = true; button.textContent = 'Validating…';
+    status.className = 'inline-status'; status.textContent = ''; button.disabled = true; button.textContent = 'Please wait…';
     try {
       const userResponse = await githubFetch('https://api.github.com/user', {}, value);
-      if (!userResponse.ok) throw new Error(userResponse.status === 401 ? 'GitHub rejected this token. Check that it is valid, unexpired, and not revoked.' : `GitHub could not validate this token (HTTP ${userResponse.status}).`);
+      if (!userResponse.ok) throw new Error('Unable to continue. Please try again.');
       const user = await userResponse.json();
       const repoResponse = await githubFetch(API, {}, value);
       if (!repoResponse.ok) {
-        if (repoResponse.status === 404) throw new Error('This token cannot access the configured repository. Check the repository selection in your fine-grained token.');
-        throw new Error(`Could not verify repository access (HTTP ${repoResponse.status}).`);
+        throw new Error('Unable to continue. Please try again.');
       }
       const repo = await repoResponse.json();
-      if (repo.full_name?.toLowerCase() !== `${OWNER}/${REPO}`.toLowerCase()) throw new Error('The repository returned by GitHub did not match the configured portfolio repository.');
-      if (repo.permissions && repo.permissions.push !== true && repo.permissions.admin !== true) throw new Error('This token has repository access but does not have write permission. Grant Contents: Read and write.');
+      if (repo.full_name?.toLowerCase() !== `${OWNER}/${REPO}`.toLowerCase()) throw new Error('Unable to continue. Please try again.');
+      if (repo.permissions && repo.permissions.push !== true && repo.permissions.admin !== true) throw new Error('Unable to continue. Please try again.');
       // GitHub may omit the permissions object in some responses; the actual write is still checked by GitHub at upload time.
       token = value; sessionExpiresAt = Date.now() + SESSION_MS; status.className = 'inline-status success';
-      status.textContent = `Validated for @${user.login}. Repository access confirmed. Session expires in one hour.`;
+      status.textContent = ''; 
       $('#sessionPill').textContent = 'Unlocked · 60 min';
       setGridLocked(false);
       $('#githubToken').value = '';
       setTimeout(() => { hideModal('tokenModal'); showModal('uploaderModal'); }, 650);
       return true;
     } catch (error) {
-      status.className = 'inline-status error'; status.textContent = error?.message || 'Token validation failed. Please try again.';
+      status.className = 'inline-status error'; status.textContent = 'Unable to continue. Please try again.';
       token = ''; sessionExpiresAt = 0; return false;
-    } finally { button.disabled = false; button.textContent = 'Validate token'; }
+    } finally { button.disabled = false; button.textContent = 'Continue'; }
   }
   async function loadGallery() {
     const grid = $('#photoGrid'); const status = $('#galleryStatus');
@@ -117,20 +117,7 @@
       allMedia.sort((a, b) => a.path.localeCompare(b.path));
       try {
         const layoutResponse = await fetch(`${RAW}asset/grid-layout.json?ts=${Date.now()}`, { cache: 'no-store' });
-        if (layoutResponse.ok) {
-          const layout = await layoutResponse.json();
-          const availableImagePaths = new Set(allMedia.filter(item => item.type === 'image').map(item => item.path));
-          if (Array.isArray(layout.order)) {
-            // Ignore stale entries (deleted images, videos, or legacy paths) and append new images.
-            const validOrder = layout.order.filter(path => typeof path === 'string' && availableImagePaths.has(path));
-            layoutOrder = [...new Set(validOrder)];
-            for (const item of allMedia) if (item.type === 'image' && !layoutOrder.includes(item.path)) layoutOrder.push(item.path);
-          }
-          if (Number.isInteger(layout.columns)) gridColumns = Math.min(8, Math.max(2, layout.columns));
-          if (layout.sizes && typeof layout.sizes === 'object') {
-            layoutSizes = Object.fromEntries(Object.entries(layout.sizes).filter(([path, size]) => availableImagePaths.has(path) && size && typeof size === 'object'));
-          }
-        }
+        if (layoutResponse.ok) { const layout = await layoutResponse.json(); if (Array.isArray(layout.order)) layoutOrder = layout.order; if (Number.isInteger(layout.columns)) gridColumns = Math.min(8, Math.max(2, layout.columns)); if (layout.sizes && typeof layout.sizes === 'object') layoutSizes = layout.sizes; }
       } catch (_) { /* first visit: use the default layout */ }
       $('#gridColumns').value = String(gridColumns);
       $('#photoGrid').style.setProperty('--grid-columns', gridColumns);
@@ -324,21 +311,93 @@
     if (!requireSession()) return;
     gridColumns = Math.min(8, Math.max(2, Number($('#gridColumns').value) || 5));
     $('#photoGrid').style.setProperty('--grid-columns', gridColumns);
-    layoutOrder = allMedia.filter(item => item.type === 'image').map(item => item.path);
+    const status = $('#gridLockStatus');
+    status.textContent = 'Saving layout…';
+
+    // Persist only image cards that actually belong to this gallery. Read the
+    // current DOM order so drag-and-drop is reflected in the saved JSON.
+    const validImagePaths = new Set(allMedia.filter(item => item.type === 'image').map(item => item.path));
+    const currentGridOrder = $$('.photo-item', $('#photoGrid'))
+      .map(card => card.dataset.path)
+      .filter(path => validImagePaths.has(path));
+    const alreadyIncluded = new Set(currentGridOrder);
+    const remainingImages = allMedia
+      .filter(item => item.type === 'image' && !alreadyIncluded.has(item.path))
+      .map(item => item.path);
+    layoutOrder = [...currentGridOrder, ...remainingImages];
+
+    // Discard size entries for deleted files and normalize dimensions.
+    const cleanSizes = {};
+    for (const [path, size] of Object.entries(layoutSizes || {})) {
+      if (!validImagePaths.has(path) || !size || typeof size !== 'object') continue;
+      cleanSizes[path] = {
+        cols: Math.max(1, Math.min(gridColumns, Number(size.cols) || 1)),
+        rows: Math.max(1, Math.min(8, Number(size.rows) || 2))
+      };
+    }
+    layoutSizes = cleanSizes;
+
     const path = 'asset/grid-layout.json';
-    const status = $('#gridLockStatus'); status.textContent = 'Saving layout…';
+    const url = `${API}/contents/${path.split('/').map(encodeURIComponent).join('/')}`;
+    const content = JSON.stringify({
+      version: 1,
+      columns: gridColumns,
+      order: layoutOrder,
+      sizes: layoutSizes,
+      updatedAt: new Date().toISOString()
+    }, null, 2);
+    const encodedContent = btoa(unescape(encodeURIComponent(content)));
+
     try {
-      const existingResponse = await githubFetch(`${API}/contents/${path}?ref=${BRANCH}`);
-      let sha;
-      if (existingResponse.ok) sha = (await existingResponse.json()).sha;
-      else if (existingResponse.status !== 404) throw new Error(`Could not check existing layout (HTTP ${existingResponse.status}).`);
-      const content = JSON.stringify({ columns: gridColumns, order: layoutOrder, sizes: layoutSizes, updatedAt: new Date().toISOString() }, null, 2);
-      const payload = { message: 'Update portfolio grid layout', content: btoa(unescape(encodeURIComponent(content))), branch: BRANCH };
-      if (sha) payload.sha = sha;
-      const response = await githubFetch(`${API}/contents/${path}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-      if (!response.ok) { const data = await response.json().catch(() => ({})); throw new Error(data.message || `Could not save layout (HTTP ${response.status}).`); }
-      status.textContent = 'Layout saved to GitHub'; toast('Grid layout saved. It will appear for all visitors after GitHub Pages updates.');
-    } catch (error) { status.textContent = 'Layout not saved'; toast(error.message || 'Could not save the grid layout.'); }
+      // GitHub can reject a write if the file changed after its SHA was read
+      // (for example, another tab or commit updated the layout). Re-fetch the
+      // latest SHA and retry a few times rather than leaving the user stuck.
+      let lastError = null;
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        if (!currentSessionValid()) throw new Error('Session expired. Please unlock the editor again.');
+        const existingResponse = await githubFetch(`${url}?ref=${BRANCH}&ts=${Date.now()}`);
+        let sha;
+        if (existingResponse.ok) {
+          const existing = await existingResponse.json();
+          sha = existing.sha;
+          if (!sha) throw new Error('Could not read the current layout version.');
+        } else if (existingResponse.status !== 404) {
+          const data = await existingResponse.json().catch(() => ({}));
+          throw new Error(data.message || `Could not check the current layout (HTTP ${existingResponse.status}).`);
+        }
+
+        const payload = {
+          message: `Update portfolio grid layout (attempt ${attempt})`,
+          content: encodedContent,
+          branch: BRANCH
+        };
+        if (sha) payload.sha = sha;
+        const response = await githubFetch(url, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (response.ok) {
+          status.textContent = 'Layout saved to GitHub';
+          toast('Grid layout saved. It will appear for all visitors after GitHub Pages updates.');
+          return;
+        }
+
+        const data = await response.json().catch(() => ({}));
+        lastError = new Error(data.message || `Could not save layout (HTTP ${response.status}).`);
+        const conflict = response.status === 409 || response.status === 422 || /does not match|sha|conflict/i.test(lastError.message);
+        if (!conflict || attempt === 3) throw lastError;
+        status.textContent = `Refreshing layout version (${attempt}/3)…`;
+        await new Promise(resolve => setTimeout(resolve, 350 * attempt));
+      }
+      throw lastError || new Error('Could not save the layout. Please try again.');
+    } catch (error) {
+      status.textContent = 'Layout not saved';
+      const message = /does not match|sha|conflict/i.test(error.message || '')
+        ? 'The layout changed on GitHub while saving. Please click Save Layout once more.'
+        : (error.message || 'Could not save the grid layout.');
+      toast(message);
+    }
   }
 
   // Gallery filters.
