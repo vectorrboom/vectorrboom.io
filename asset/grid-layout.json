@@ -9,8 +9,7 @@
     "asset/img/event/18158625970506893.jpg",
     "asset/img/event/18228118135336686.jpg",
     "asset/img/pets/8W.jpg",
-    "asset/img/pets/4.jpg",
-    "asset/img/portraits/Gemini_Generated_Image_y7dnely7dnely7dn.png"
+    "asset/img/pets/4.jpg"
   ],
   "sizes": {
     "asset/img/event/17987435301100099.jpg": {
@@ -44,11 +43,7 @@
     "asset/img/pets/4.jpg": {
       "cols": 1,
       "rows": 4
-    },
-    "asset/img/portraits/Gemini_Generated_Image_y7dnely7dnely7dn.png": {
-      "cols": 2,
-      "rows": 6
     }
   },
-  "updatedAt": "2026-11-05T19:25:25.756Z"
+  "updatedAt": "2026-11-05T19:34:48.847Z"
 }
